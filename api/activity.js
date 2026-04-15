@@ -102,7 +102,8 @@ export default async function handler(req, res) {
         })
       : '';
 
-    const type = metricNames[metricId] ?? 'Unknown';
+    const rawType = metricNames[metricId] ?? 'Unknown';
+    const type = `${emojiForType(rawType)} ${rawType}`;
     const detail =
       props.Subject ??
       props['Campaign Name'] ??
@@ -111,7 +112,7 @@ export default async function handler(req, res) {
       props.name ??
       '';
 
-    return { date, type, detail, icon: iconForType(type), emoji: emojiForType(type) };
+    return { date, type, detail };
   });
 
   return res.json({
