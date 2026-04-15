@@ -18,10 +18,28 @@ const EVENT_ICONS = {
   'Skio: Subscription Renewed': ICON_REFRESH,
 };
 
+const EVENT_EMOJIS = {
+  'Opened Email':    '📧',
+  'Clicked Email':   '📧',
+  'Received Email':  '📥',
+  'Placed Order':    '🛍️',
+  'Ordered Product': '🛍️',
+  'Fulfilled Order': '🎁',
+  'Opened Ticket':   '📬',
+  'Resolved Ticket': '✅',
+  'Skio: Subscription Renewed': '🔄',
+};
+
 function iconForType(type) {
   if (EVENT_ICONS[type]) return EVENT_ICONS[type];
   if (type.startsWith('AfterShip:')) return ICON_GIFT;
   return ICON_CLIPBOARD;
+}
+
+function emojiForType(type) {
+  if (EVENT_EMOJIS[type]) return EVENT_EMOJIS[type];
+  if (type.startsWith('AfterShip:')) return '📦';
+  return '📋';
 }
 
 export default async function handler(req, res) {
@@ -93,7 +111,7 @@ export default async function handler(req, res) {
       props.name ??
       '';
 
-    return { date, type, detail, icon: iconForType(type) };
+    return { date, type, detail, icon: iconForType(type), emoji: emojiForType(type) };
   });
 
   return res.json({
