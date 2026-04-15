@@ -1,29 +1,21 @@
-// Twemoji CDN helper — converts an emoji character to its PNG URL
-function twemoji(emoji) {
-  const codepoints = [...emoji]
-    .map((c) => c.codePointAt(0).toString(16))
-    .filter((cp) => cp !== 'fe0f') // strip variation selector
-    .join('-');
-  return `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/${codepoints}.png`;
-}
+const BASE = 'https://gorgias-klaviyo-activity-log-integ.vercel.app/icons';
 
 const EVENT_ICONS = {
-  'Opened Email':    twemoji('📧'),
-  'Clicked Email':   twemoji('📧'),
-  'Received Email':  twemoji('📩'),
-  'Placed Order':    twemoji('🛍️'),
-  'Ordered Product': twemoji('🛍️'),
-  'Fulfilled Order': twemoji('🎁'),
-  'Opened Ticket':   twemoji('💌'),
-  'Resolved Ticket': twemoji('💌'),
-  'Skio: Subscription Renewed': twemoji('🔁'),
+  'Opened Email':    `${BASE}/email.png`,
+  'Clicked Email':   `${BASE}/email.png`,
+  'Received Email':  `${BASE}/inbox.png`,
+  'Placed Order':    `${BASE}/bag.png`,
+  'Ordered Product': `${BASE}/bag.png`,
+  'Fulfilled Order': `${BASE}/gift.png`,
+  'Opened Ticket':   `${BASE}/letter.png`,
+  'Resolved Ticket': `${BASE}/letter.png`,
+  'Skio: Subscription Renewed': `${BASE}/refresh.png`,
 };
 
-// Prefix match for AfterShip delivery events
 function iconForType(type) {
   if (EVENT_ICONS[type]) return EVENT_ICONS[type];
-  if (type.startsWith('AfterShip:')) return twemoji('🎁');
-  return twemoji('📋'); // fallback
+  if (type.startsWith('AfterShip:')) return `${BASE}/gift.png`;
+  return `${BASE}/clipboard.png`;
 }
 
 export default async function handler(req, res) {
