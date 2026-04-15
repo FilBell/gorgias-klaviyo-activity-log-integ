@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/activity.js": {
+      "maxDuration": 10
+    }
+  }
+}
