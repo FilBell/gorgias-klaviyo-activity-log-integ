@@ -1,3 +1,31 @@
+// Twemoji CDN helper — converts an emoji character to its PNG URL
+function twemoji(emoji) {
+  const codepoints = [...emoji]
+    .map((c) => c.codePointAt(0).toString(16))
+    .filter((cp) => cp !== 'fe0f') // strip variation selector
+    .join('-');
+  return `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/${codepoints}.png`;
+}
+
+const EVENT_ICONS = {
+  'Opened Email':    twemoji('📧'),
+  'Clicked Email':   twemoji('📧'),
+  'Received Email':  twemoji('📩'),
+  'Placed Order':    twemoji('🛍️'),
+  'Ordered Product': twemoji('🛍️'),
+  'Fulfilled Order': twemoji('🎁'),
+  'Opened Ticket':   twemoji('💌'),
+  'Resolved Ticket': twemoji('💌'),
+  'Skio: Subscription Renewed': twemoji('🔁'),
+};
+
+// Prefix match for AfterShip delivery events
+function iconForType(type) {
+  if (EVENT_ICONS[type]) return EVENT_ICONS[type];
+  if (type.startsWith('AfterShip:')) return twemoji('🎁');
+  return twemoji('📋'); // fallback
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -67,7 +95,7 @@ export default async function handler(req, res) {
       props.name ??
       '';
 
-    return { date, type, detail };
+    return { date, type, detail, icon: iconForType(type) };
   });
 
   return res.json({
