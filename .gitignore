@@ -1,0 +1,19 @@
+.DS_Store
+.env
+.env.local
+*.log
+
+# python
+__pycache__/
+*.pyc
+
+# node
+node_modules/
+
+# vercel
+.vercel
+
+# never commit credentials
+service-account.json
+google_service_account.json
+*.creds.json
